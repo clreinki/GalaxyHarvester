@@ -1,0 +1,39 @@
+{% import 'blocks.html' as blocks %}
+<!DOCTYPE html>
+<html lang="en"><head><title>Feedback - Galaxy Harvester</title>
+<link rel="stylesheet" href="/style/ghCore.css" type="text/css" />
+<link rel="stylesheet" href="/style/themes/{{ uiTheme }}.css" type="text/css" />
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script src="/js/ghShared.js" type="text/javascript"></script>
+<script src="http://www.google.com/moderator/static/moderator-embed-api.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#galaxySel").val(getCookie("galaxy",defaultGalaxy));
+    $(".window .close").click(function(e) {
+        e.preventDefault();
+        $("#mask, .window").hide();
+    });
+    $("#mask").click(function() {
+        $(this).hide();
+        $(".window").hide();
+    });
+});
+</script>
+{{ blocks.pageTracker() }}
+<body>
+{{ blocks.headerSection(loggedin, currentUser, loginResult, linkappend, url, imgNum, galaxyList, pictureName) }}
+
+<div id="mainContent" class="wrapper">
+  <div>
+    <div id="messageBox" class="ghWidgetBox">
+    <div id="moderator-embed-target"></div>
+    <script type="text/javascript">
+    MODERATOR_embed("http://www.google.com/moderator/#15/e=27981", "moderator-embed-target");
+    </script>
+    </div>
+  </div>
+</div>
+{{ blocks.pageFooter() }}
+{{ blocks.joinForm(loggedin, ['?src_url=feedback.py&', linkappend]|join, url) }}
+<div id="mask"> </div>
+</body></html>

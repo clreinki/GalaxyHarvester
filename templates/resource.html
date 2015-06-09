@@ -1,0 +1,55 @@
+{% import 'blocks.html' as blocks %}
+<!DOCTYPE html>
+<html lang="en"><head><title>Resource - Galaxy Harvester</title>
+<link rel="stylesheet" href="/style/ghCore.css" type="text/css" />
+<link rel="stylesheet" href="/style/themes/{{ uiTheme }}.css" type="text/css" />
+<script type="text/javascript" src="/js/ghShared.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/jquery.autocomplete-min.js"></script>
+<script type="text/javascript" src="/js/Colors.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#galaxySel").val(getCookie("galaxy",defaultGalaxy));
+    $(".window .close").click(function(e) {
+        e.preventDefault();
+        $("#mask, .window").hide();
+    });
+    $("#mask").click(function() {
+        $(this).hide();
+        $(".window").hide();
+    });
+    findWaypoints("spawn");
+    $("#typeSel").load(BASE_SCRIPT_URL + "getResourceTypeList.py");
+});
+</script>
+{{ blocks.pageTracker() }}
+<body>
+{{ blocks.headerSection(loggedin, currentUser, loginResult, linkappend, url, imgNum, galaxyList, pictureName) }}
+<div id="mainContent" class="wrapper">
+  <div id="leftNavContent" class="ghCol">
+    <div id="resourceWaypoints" class="ghWidgetBox">
+    <div class="boxHeader">Waypoints
+{% if loggedin == 1 %}
+      <div style="float:right;"><button type=button value="New Waypoint" class="ghButton" onclick="addWaypoint('{{ spawnName }}');">New Waypoint</button></div>
+{% endif %}
+      </div>
+    <input type="hidden" id="findSpawn" value="{{ spawnName }}"></input>
+    <table id="findWaypointsList"></table>
+    </div>
+  </div>
+  <div id="rightMainContent" class="ghCol">
+    <div id="resourceInfo" class="ghWidgetBox">
+{{ resHTML }}
+    </div>
+    <div id="resourceHistory" class="ghWidgetBox">
+    <div class="boxHeader">Resource History</div>
+{{ resHistory }}
+    </div>
+  </div>
+</div>
+{{ blocks.pageFooter() }}
+{{ blocks.resourceForm() }}
+{{ blocks.joinForm(loggedin, ['?src_url={{ BASE_SCRIPT_URL }}resource.py&', linkappend]|join, url) }}
+{{ blocks.waypointForm(loggedin, planetList) }}
+<div id="mask"></div>
+</body></html>
